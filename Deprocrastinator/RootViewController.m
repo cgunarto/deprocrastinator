@@ -7,12 +7,14 @@
 //
 
 #import "RootViewController.h"
+#import "ToDoData.h"
 
 @interface RootViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 @property NSMutableArray *toDoItemsArray;
 @property (weak, nonatomic) IBOutlet UITextField *addToDoTextLabel;
 @property (weak, nonatomic) IBOutlet UITableView *toDoTableView;
 //WE HAD TO CREATE THIS IN ORDER FOR BUTTON PRESSED TO ACCESS AND UPDATE THE TABLE VIEW ARRAY TO DO CELL
+@property NSInteger selectedRow;
 
 @end
 
@@ -22,11 +24,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.toDoItemsArray = [[NSMutableArray alloc] initWithObjects:
-                           @"to do list 1",
-                           @"to do list 2",
-                           @"to do list 3",
-                           @"to do list 4", nil];
+
+    self.toDoItemsArray = [NSMutableArray new];
+    ToDoData *firstItem = [[ToDoData alloc] init];
+    firstItem.toDoText = @"Testing";
+    [self.toDoItemsArray addObject:firstItem];
+
+    ToDoData *secondItem = [[ToDoData alloc] init];
+    secondItem.toDoText = @"Testing 2";
+    [self.toDoItemsArray addObject:secondItem];
+
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -37,13 +44,26 @@
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"toDoCell" forIndexPath:indexPath];
-    cell.textLabel.text = self.toDoItemsArray[indexPath.row];
+    ToDoData *toDoItem = self.toDoItemsArray[indexPath.row];
+
+    cell.textLabel.text = toDoItem.toDoText;
     return cell;
+
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    self.selectedRow = indexPath.row;
+    NSLog(@"Row Selected %li", (long)self.selectedRow);
+   //[self.toDoTableView cellForRowAtIndexPath:[self.selectedRow intValue]].accessoryType = UITableViewCellAccessoryCheckmark;
+
 }
 
 - (IBAction)onAddButtonPressed:(id)sender
 {
-    NSString *newToDoItem = self.addToDoTextLabel.text;
+    ToDoData *newToDoItem = [[ToDoData alloc]init];
+    newToDoItem.toDoText = self.addToDoTextLabel.text;
     [self.toDoItemsArray addObject:newToDoItem];
     [self.toDoTableView reloadData]; // WE HAD TO ADD THIS TO RELOAD TABLE VIEW
     self.addToDoTextLabel.text = @"";
