@@ -30,7 +30,7 @@
                                     </connections>
                                 </textField>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="toDoCell" textLabel="fk8-ka-LtS" style="IBUITableViewCellStyleDefault" id="CaQ-Y0-A8s">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="toDoCell" textLabel="fk8-ka-LtS" style="IBUITableViewCellStyleDefault" id="CaQ-Y0-A8s">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CaQ-Y0-A8s" id="fm6-bU-n4q">
