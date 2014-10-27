@@ -14,7 +14,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *addToDoTextLabel;
 @property (weak, nonatomic) IBOutlet UITableView *toDoTableView;
 //WE HAD TO CREATE THIS IN ORDER FOR BUTTON PRESSED TO ACCESS AND UPDATE THE TABLE VIEW ARRAY TO DO CELL
-@property NSInteger selectedRow;
 
 @end
 
@@ -51,12 +50,21 @@
 
 }
 
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    self.selectedRow = indexPath.row;
-    NSLog(@"Row Selected %li", (long)self.selectedRow);
-   //[self.toDoTableView cellForRowAtIndexPath:[self.selectedRow intValue]].accessoryType = UITableViewCellAccessoryCheckmark;
+    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+
+    if (selectedCell.accessoryType == UITableViewCellAccessoryNone)
+    {
+        selectedCell.accessoryType = UITableViewCellAccessoryCheckmark;
+
+    }
+    else if (selectedCell.accessoryType == UITableViewCellAccessoryCheckmark)
+    {
+        selectedCell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
 
 }
 
@@ -65,10 +73,38 @@
     ToDoData *newToDoItem = [[ToDoData alloc]init];
     newToDoItem.toDoText = self.addToDoTextLabel.text;
     [self.toDoItemsArray addObject:newToDoItem];
+
     [self.toDoTableView reloadData]; // WE HAD TO ADD THIS TO RELOAD TABLE VIEW
+
     self.addToDoTextLabel.text = @"";
     [self.addToDoTextLabel resignFirstResponder];
 }
+
+- (IBAction)onEditButtonPressed:(UIBarButtonItem *)editButton
+{
+    NSString *buttonTitle = editButton.title;
+
+    if([buttonTitle isEqualToString: @"Edit"])
+    {
+         [editButton setTitle:@"Done"];
+
+        //can it listen to when a table view is being tapped
+
+
+    }
+    else if ([buttonTitle isEqualToString: @"Done"])
+    {
+        [editButton setTitle:@"Edit"];
+    }
+
+    //removing objects from the array
+    //then reloading the Table View
+
+
+}
+
+
+
 
 //- (void)textFieldDidEndEditing:(UITextField *)textField
 //{
