@@ -49,16 +49,21 @@
                                 <connections>
                                     <outlet property="dataSource" destination="vXZ-lx-hvc" id="rl8-fN-K0q"/>
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="0ls-Xw-0DE"/>
+                                    <outletCollection property="gestureRecognizers" destination="ucV-VC-Vjs" appends="YES" id="TZz-RC-Zlc"/>
                                 </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Hwi-5Q-ox7" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" id="G4j-b4-X1x"/>
                             <constraint firstItem="Hwi-5Q-ox7" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="jQc-5Q-xbe"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Hwi-5Q-ox7" secondAttribute="bottom" id="uzA-nK-jtE"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Hwi-5Q-ox7" secondAttribute="trailing" constant="-16" id="wp9-8o-0gL"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="ucV-VC-Vjs" appends="YES" id="JEq-qt-gxY"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" title="TO DO LIST" id="YoR-st-ONy">
                         <barButtonItem key="leftBarButtonItem" title="Edit" id="lVO-W4-Y5U">
@@ -78,6 +83,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="ucV-VC-Vjs">
+                    <connections>
+                        <action selector="swipePriorityHandler:" destination="vXZ-lx-hvc" id="afv-Mo-a7h"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="766" y="362"/>
         </scene>

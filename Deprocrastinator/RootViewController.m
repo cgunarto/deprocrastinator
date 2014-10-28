@@ -128,9 +128,16 @@
     //removing objects from the array
     //then reloading the Table View
 
-
 }
 
+- (IBAction)swipePriorityHandler:(UISwipeGestureRecognizer *)gesture
+{
+        CGPoint location = [gesture locationInView:self.view];
+        NSIndexPath *swipedIndexPath = [self.toDoTableView indexPathForRowAtPoint:location];
+        UITableViewCell *swipedCell = [self.toDoTableView cellForRowAtIndexPath:swipedIndexPath];
+        swipedCell.backgroundColor = [UIColor redColor];
+
+}
 
 
 
