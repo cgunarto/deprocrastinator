@@ -55,17 +55,31 @@
 
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
 
+    ToDoData *toDoItemSelected = self.toDoItemsArray[indexPath.row];
     if (selectedCell.accessoryType == UITableViewCellAccessoryNone)
     {
         selectedCell.accessoryType = UITableViewCellAccessoryCheckmark;
+
+        toDoItemSelected.boolIsChecked = YES;
 
     }
     else if (selectedCell.accessoryType == UITableViewCellAccessoryCheckmark)
     {
         selectedCell.accessoryType = UITableViewCellAccessoryNone;
+
+        toDoItemSelected.boolIsChecked = NO;
     }
 
 
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        [self.toDoItemsArray removeObjectAtIndex:indexPath.row];
+        [self.toDoTableView reloadData];
+    }
 }
 
 - (IBAction)onAddButtonPressed:(id)sender
@@ -95,6 +109,20 @@
     else if ([buttonTitle isEqualToString: @"Done"])
     {
         [editButton setTitle:@"Edit"];
+//Change data model, not the view.
+        for (int i = 0; i < [self.toDoItemsArray count]; i++)
+        {
+            //UITableViewCell *selectedCell = [[self.toDoTableView] cellForRowAtIndexPath:i];
+            ToDoData *selectedToDoList = self.toDoItemsArray[i];
+
+            if (selectedToDoList.boolIsChecked == YES)
+            {
+                [self.toDoItemsArray removeObjectAtIndex:i];
+
+                [self.toDoTableView reloadData];
+            }///Do we need to put anything here for else?
+        }
+
     }
 
     //removing objects from the array
