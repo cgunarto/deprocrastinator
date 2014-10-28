@@ -82,10 +82,19 @@
     }
 }
 
-//- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+//- (BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 //{
-//    
+//    return YES;
 //}
+//
+//- (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+//{
+//    ToDoData *toDoDataToMove = self.toDoItemsArray[sourceIndexPath.row];
+//    [self.toDoItemsArray removeObjectAtIndex:sourceIndexPath.row];
+//    [self.toDoItemsArray insertObject:toDoDataToMove atIndex:destinationIndexPath.row];
+//}
+
+
 
 - (IBAction)onAddButtonPressed:(id)sender
 {
@@ -115,26 +124,36 @@
     else if ([buttonTitle isEqualToString: @"Done"])
     {
         [editButton setTitle:@"Edit"];
-//Change data model, not the view.
-        for (int i = 0; i < [self.toDoItemsArray count]; i++)
+        //Change data model, not the view.
+
+        UIAlertController *deleteOrCancelAlert = [UIAlertController alertControllerWithTitle:@"Confirm Delete" message:@"Are you sure you want to delete this task?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *delete = [UIAlertAction actionWithTitle:@"DELETE" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)
         {
-            //UITableViewCell *selectedCell = [[self.toDoTableView] cellForRowAtIndexPath:i];
-            ToDoData *selectedToDoList = self.toDoItemsArray[i];
-
-            if (selectedToDoList.boolIsChecked == YES)
+            for (int i = 0; i < [self.toDoItemsArray count]; i++)
             {
-                [self.toDoItemsArray removeObjectAtIndex:i];
+                //UITableViewCell *selectedCell = [[self.toDoTableView] cellForRowAtIndexPath:i];
+                ToDoData *selectedToDoList = self.toDoItemsArray[i];
 
-                [self.toDoTableView reloadData];
-            }///Do we need to put anything here for else?
-        }
+                if (selectedToDoList.boolIsChecked == YES)
+                {
+                    [self.toDoItemsArray removeObjectAtIndex:i];
+
+                    [self.toDoTableView reloadData];
+                }///Do we need to put anything here for else?
+            }
+        }];
+        [deleteOrCancelAlert addAction:delete];
+
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL" style:UIAlertActionStyleDefault handler:nil];
+        [deleteOrCancelAlert addAction:cancel];
+
+        [self presentViewController:deleteOrCancelAlert animated:YES completion:nil];
 
     }
 
-    //removing objects from the array
-    //then reloading the Table View
-
 }
+
+
 
 - (IBAction)swipePriorityHandler:(UISwipeGestureRecognizer *)gesture
 {
@@ -177,10 +196,5 @@
 
 
 
-
-//- (void)textFieldDidEndEditing:(UITextField *)textField
-//{
-//
-//}
 
 @end
