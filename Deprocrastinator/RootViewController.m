@@ -26,11 +26,11 @@
 
     self.toDoItemsArray = [NSMutableArray new];
     ToDoData *firstItem = [[ToDoData alloc] init];
-    firstItem.toDoText = @"Testing";
+    firstItem.toDoText = @"Buy groceries";
     [self.toDoItemsArray addObject:firstItem];
 
     ToDoData *secondItem = [[ToDoData alloc] init];
-    secondItem.toDoText = @"Testing 2";
+    secondItem.toDoText = @"Do laundry";
     [self.toDoItemsArray addObject:secondItem];
 
 }
@@ -171,54 +171,90 @@
 
 - (IBAction)onEditButtonPressed:(UIBarButtonItem *)editButton
 {
-    NSString *buttonTitle = editButton.title;
+//    NSString *buttonTitle = editButton.title;
+//    self.toDoTableView.editing = YES;
 
-    self.toDoTableView.editing = YES;
+    self.toDoTableView.editing = !self.toDoTableView.editing; // new way of checking the editing mode and toggling it to the other one
 
-    if([buttonTitle isEqualToString: @"Edit"])
+    if (self.toDoTableView.editing)
     {
-         [editButton setTitle:@"Done"];
-
-        //can it listen to when a table view is being tapped
-
-
+        [editButton setTitle:@"Done"];
     }
-    else if ([buttonTitle isEqualToString: @"Done"])
+
+    else
     {
         [editButton setTitle:@"Edit"];
         //Change through data model, not the view.
 
         UIAlertController *deleteOrCancelAlert = [UIAlertController alertControllerWithTitle:@"Confirm Delete" message:@"Are you sure you want to delete this task?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *delete = [UIAlertAction actionWithTitle:@"DELETE" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)
-        {
-            for (int i = 0; i < [self.toDoItemsArray count]; i++)
-            {
-                //UITableViewCell *selectedCell = [[self.toDoTableView] cellForRowAtIndexPath:i];
-                ToDoData *selectedToDoList = self.toDoItemsArray[i];
+                                 {
+                                     for (int i = 0; i < [self.toDoItemsArray count]; i++)
+                                     {
+                                         //UITableViewCell *selectedCell = [[self.toDoTableView] cellForRowAtIndexPath:i];
+                                         ToDoData *selectedToDoList = self.toDoItemsArray[i];
 
-                if (selectedToDoList.boolIsChecked == YES)
-                {
-                    [self.toDoItemsArray removeObjectAtIndex:i];
+                                         if (selectedToDoList.boolIsChecked == YES)
+                                         {
+                                             [self.toDoItemsArray removeObjectAtIndex:i];
 
-                    [self.toDoTableView reloadData];
-                }
-            }
-        }];
+                                             [self.toDoTableView reloadData];
+                                         }
+                                     }
+                                 }];
         [deleteOrCancelAlert addAction:delete];
-
+        
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL" style:UIAlertActionStyleDefault handler:nil];
         [deleteOrCancelAlert addAction:cancel];
-
+        
         [self presentViewController:deleteOrCancelAlert animated:YES completion:nil];
         self.toDoTableView.editing = NO;
-
     }
+
+//    if([buttonTitle isEqualToString: @"Edit"])
+//    {
+//         [editButton setTitle:@"Done"];
+//
+//        //can it listen to when a table view is being tapped
+//
+//
+//    }
+//    else if ([buttonTitle isEqualToString: @"Done"])
+//    {
+//        [editButton setTitle:@"Edit"];
+//        //Change through data model, not the view.
+//
+//        UIAlertController *deleteOrCancelAlert = [UIAlertController alertControllerWithTitle:@"Confirm Delete" message:@"Are you sure you want to delete this task?" preferredStyle:UIAlertControllerStyleAlert];
+//        UIAlertAction *delete = [UIAlertAction actionWithTitle:@"DELETE" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)
+//        {
+//            for (int i = 0; i < [self.toDoItemsArray count]; i++)
+//            {
+//                //UITableViewCell *selectedCell = [[self.toDoTableView] cellForRowAtIndexPath:i];
+//                ToDoData *selectedToDoList = self.toDoItemsArray[i];
+//
+//                if (selectedToDoList.boolIsChecked == YES)
+//                {
+//                    [self.toDoItemsArray removeObjectAtIndex:i];
+//
+//                    [self.toDoTableView reloadData];
+//                }
+//            }
+//        }];
+//        [deleteOrCancelAlert addAction:delete];
+//
+//        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL" style:UIAlertActionStyleDefault handler:nil];
+//        [deleteOrCancelAlert addAction:cancel];
+//
+//        [self presentViewController:deleteOrCancelAlert animated:YES completion:nil];
+//        self.toDoTableView.editing = NO;
+//
+//    }
 
 }
 
 #pragma mark SWIPE HANDLER
 
-
+//changes the color to red when you swipe once, yellow when you swipe twice, and green when you swipe three times
 - (IBAction)swipePriorityHandler:(UISwipeGestureRecognizer *)gesture
 {
         CGPoint location = [gesture locationInView:self.toDoTableView]; //instead of self.view, change it to self.toDoTableView
@@ -256,6 +292,7 @@
             swipedCell.backgroundColor = [UIColor redColor];
             toDoItemSwiped.labelColor = @"red";
         }
+//        [self.toDoTableView reloadData];
 }
 
 /*BUGS
