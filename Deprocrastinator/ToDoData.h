@@ -12,5 +12,6 @@
 
 @property NSString *toDoText;
 @property BOOL boolIsChecked;
+@property NSString *labelColor;
 
 @end

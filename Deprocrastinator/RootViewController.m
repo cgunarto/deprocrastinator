@@ -82,10 +82,16 @@
     }
 }
 
+//- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+//{
+//    
+//}
+
 - (IBAction)onAddButtonPressed:(id)sender
 {
     ToDoData *newToDoItem = [[ToDoData alloc]init];
     newToDoItem.toDoText = self.addToDoTextLabel.text;
+    newToDoItem.labelColor = @"white";
     [self.toDoItemsArray addObject:newToDoItem];
 
     [self.toDoTableView reloadData]; // WE HAD TO ADD THIS TO RELOAD TABLE VIEW
@@ -132,12 +138,43 @@
 
 - (IBAction)swipePriorityHandler:(UISwipeGestureRecognizer *)gesture
 {
-        CGPoint location = [gesture locationInView:self.view];
+        CGPoint location = [gesture locationInView:self.toDoTableView]; //instead of self.view, change it to self.toDoTableView
         NSIndexPath *swipedIndexPath = [self.toDoTableView indexPathForRowAtPoint:location];
-        UITableViewCell *swipedCell = [self.toDoTableView cellForRowAtIndexPath:swipedIndexPath];
-        swipedCell.backgroundColor = [UIColor redColor];
+        UITableViewCell *swipedCell = [self.toDoTableView cellForRowAtIndexPath:swipedIndexPath]; //swipedIndexPath.row
 
+        ToDoData *toDoItemSwiped = self.toDoItemsArray [swipedIndexPath.row];
+
+        if ([toDoItemSwiped.labelColor isEqualToString:@"white"])
+        {
+            swipedCell.backgroundColor = [UIColor redColor];
+            toDoItemSwiped.labelColor = @"red";
+        }
+
+        else if ([toDoItemSwiped.labelColor isEqualToString:@"red"])
+        {
+            swipedCell.backgroundColor = [UIColor yellowColor];
+            toDoItemSwiped.labelColor = @"yellow";
+        }
+
+        else if ([toDoItemSwiped.labelColor isEqualToString:@"yellow"])
+        {
+            swipedCell.backgroundColor = [UIColor greenColor];
+            toDoItemSwiped.labelColor = @"green";
+        }
+
+        else if ([toDoItemSwiped.labelColor isEqualToString:@"green"])
+        {
+            swipedCell.backgroundColor = [UIColor whiteColor];
+            toDoItemSwiped.labelColor = @"white";
+        }
+        else
+        {
+            swipedCell.backgroundColor = [UIColor redColor];
+            toDoItemSwiped.labelColor = @"red";
+        }
 }
+
+
 
 
 
