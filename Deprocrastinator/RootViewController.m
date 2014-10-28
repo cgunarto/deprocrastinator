@@ -13,7 +13,7 @@
 @property NSMutableArray *toDoItemsArray;
 @property (weak, nonatomic) IBOutlet UITextField *addToDoTextLabel;
 @property (weak, nonatomic) IBOutlet UITableView *toDoTableView;
-//WE HAD TO CREATE THIS IN ORDER FOR BUTTON PRESSED TO ACCESS AND UPDATE THE TABLE VIEW ARRAY TO DO CELL
+//ToDoTableView property created in order for classes in the self to access its properties
 
 @end
 
@@ -35,6 +35,8 @@
 
 }
 
+#pragma mark TABLE VIEW
+
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [self.toDoItemsArray count];
@@ -46,24 +48,25 @@
     ToDoData *toDoItem = self.toDoItemsArray[indexPath.row];
 
     cell.textLabel.text = toDoItem.toDoText;
+    NSString *labelColor = toDoItem.labelColor;
 
     //setting the color of the background
-    if ([toDoItem.labelColor isEqualToString:@"red"])
+    if ([labelColor isEqualToString:@"red"])
     {
         cell.textLabel.backgroundColor = [UIColor redColor];
     }
 
-    else if ([toDoItem.labelColor isEqualToString:@"yellow"])
+    else if ([labelColor isEqualToString:@"yellow"])
     {
         cell.textLabel.backgroundColor = [UIColor yellowColor];
     }
 
-    else if ([toDoItem.labelColor isEqualToString:@"green"])
+    else if ([labelColor isEqualToString:@"green"])
     {
         cell.textLabel.backgroundColor = [UIColor greenColor];
     }
 
-    else if ([toDoItem.labelColor isEqualToString:@"white"])
+    else if ([labelColor isEqualToString:@"white"])
     {
         cell.textLabel.backgroundColor = [UIColor whiteColor];
     }
@@ -88,6 +91,8 @@
 
 }
 
+
+// allowing for tapped tableView cell to be changed from unchecked to checked or vice versa, and updating the Data model
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
@@ -130,33 +135,35 @@
         
         [self presentViewController:deleteOrCancelAlert animated:YES completion:nil];
 
-
-
     }
 }
 
-//- (BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return YES;
-//}
-//
-//- (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
-//{
-//    ToDoData *toDoDataToMove = self.toDoItemsArray[sourceIndexPath.row];
-//    [self.toDoItemsArray removeObjectAtIndex:sourceIndexPath.row];
-//    [self.toDoItemsArray insertObject:toDoDataToMove atIndex:destinationIndexPath.row];
-//}
+- (BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    ToDoData *toDoDataToMove = self.toDoItemsArray[sourceIndexPath.row];
+    [self.toDoItemsArray removeObjectAtIndex:sourceIndexPath.row];
+    [self.toDoItemsArray insertObject:toDoDataToMove atIndex:destinationIndexPath.row];
+}
 
 
+#pragma mark NAVIGATION BUTTON METHODS
 
 - (IBAction)onAddButtonPressed:(id)sender
 {
-    ToDoData *newToDoItem = [[ToDoData alloc]init];
-    newToDoItem.toDoText = self.addToDoTextLabel.text;
-    newToDoItem.labelColor = @"white";
-    [self.toDoItemsArray addObject:newToDoItem];
+    if (![self.addToDoTextLabel.text isEqualToString: @""])
+    {
+        ToDoData *newToDoItem = [[ToDoData alloc]init];
+        newToDoItem.toDoText = self.addToDoTextLabel.text;
+        newToDoItem.labelColor = @"white";
 
-    [self.toDoTableView reloadData]; // WE HAD TO ADD THIS TO RELOAD TABLE VIEW
+        [self.toDoItemsArray addObject:newToDoItem];
+        [self.toDoTableView reloadData]; // WE HAD TO ADD THIS TO RELOAD TABLE VIEW
+    }
 
     self.addToDoTextLabel.text = @"";
     [self.addToDoTextLabel resignFirstResponder];
@@ -165,6 +172,8 @@
 - (IBAction)onEditButtonPressed:(UIBarButtonItem *)editButton
 {
     NSString *buttonTitle = editButton.title;
+
+    self.toDoTableView.editing = YES;
 
     if([buttonTitle isEqualToString: @"Edit"])
     {
@@ -177,7 +186,7 @@
     else if ([buttonTitle isEqualToString: @"Done"])
     {
         [editButton setTitle:@"Edit"];
-        //Change data model, not the view.
+        //Change through data model, not the view.
 
         UIAlertController *deleteOrCancelAlert = [UIAlertController alertControllerWithTitle:@"Confirm Delete" message:@"Are you sure you want to delete this task?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *delete = [UIAlertAction actionWithTitle:@"DELETE" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)
@@ -192,7 +201,7 @@
                     [self.toDoItemsArray removeObjectAtIndex:i];
 
                     [self.toDoTableView reloadData];
-                }///Do we need to put anything here for else?
+                }
             }
         }];
         [deleteOrCancelAlert addAction:delete];
@@ -201,11 +210,13 @@
         [deleteOrCancelAlert addAction:cancel];
 
         [self presentViewController:deleteOrCancelAlert animated:YES completion:nil];
+        self.toDoTableView.editing = NO;
 
     }
 
 }
 
+#pragma mark SWIPE HANDLER
 
 
 - (IBAction)swipePriorityHandler:(UISwipeGestureRecognizer *)gesture
@@ -215,26 +226,27 @@
         UITableViewCell *swipedCell = [self.toDoTableView cellForRowAtIndexPath:swipedIndexPath]; //swipedIndexPath.row
 
         ToDoData *toDoItemSwiped = self.toDoItemsArray [swipedIndexPath.row];
+        NSString *currentLabelColor = toDoItemSwiped.labelColor;
 
-        if ([toDoItemSwiped.labelColor isEqualToString:@"white"])
+        if ([currentLabelColor isEqualToString:@"white"])
         {
             swipedCell.backgroundColor = [UIColor redColor];
             toDoItemSwiped.labelColor = @"red";
         }
 
-        else if ([toDoItemSwiped.labelColor isEqualToString:@"red"])
+        else if ([currentLabelColor isEqualToString:@"red"])
         {
             swipedCell.backgroundColor = [UIColor yellowColor];
             toDoItemSwiped.labelColor = @"yellow";
         }
 
-        else if ([toDoItemSwiped.labelColor isEqualToString:@"yellow"])
+        else if ([currentLabelColor isEqualToString:@"yellow"])
         {
             swipedCell.backgroundColor = [UIColor greenColor];
             toDoItemSwiped.labelColor = @"green";
         }
 
-        else if ([toDoItemSwiped.labelColor isEqualToString:@"green"])
+        else if ([currentLabelColor isEqualToString:@"green"])
         {
             swipedCell.backgroundColor = [UIColor whiteColor];
             toDoItemSwiped.labelColor = @"white";
@@ -246,7 +258,12 @@
         }
 }
 
+/*BUGS
+ 
+ When empty cell label is swiped a couple of times and then a new one is added, it changes the color
+ Delete button and edit done button prompts the same alert view message
 
+*/
 
 
 

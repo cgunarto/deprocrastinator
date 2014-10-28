@@ -17,18 +17,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter task to add here" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="vse-aq-QvG">
+                                <rect key="frame" x="0.0" y="64" width="320" height="52"/>
+                                <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="52" id="v3N-B9-zXx"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HiraKakuProN-W3" family="Hiragino Kaku Gothic ProN" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="lwz-sN-D88"/>
+                                </connections>
+                            </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Hwi-5Q-ox7">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="116" width="320" height="452"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <textField key="tableFooterView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="vse-aq-QvG">
-                                    <rect key="frame" x="0.0" y="-30" width="320" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="vXZ-lx-hvc" id="lwz-sN-D88"/>
-                                    </connections>
-                                </textField>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="toDoCell" textLabel="fk8-ka-LtS" style="IBUITableViewCellStyleDefault" id="CaQ-Y0-A8s">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -56,10 +59,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="Hwi-5Q-ox7" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" id="G4j-b4-X1x"/>
-                            <constraint firstItem="Hwi-5Q-ox7" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="jQc-5Q-xbe"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Hwi-5Q-ox7" secondAttribute="bottom" id="uzA-nK-jtE"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Hwi-5Q-ox7" secondAttribute="trailing" constant="-16" id="wp9-8o-0gL"/>
+                            <constraint firstItem="Hwi-5Q-ox7" firstAttribute="top" secondItem="vse-aq-QvG" secondAttribute="bottom" id="3LT-1T-dbn"/>
+                            <constraint firstItem="Hwi-5Q-ox7" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="DpD-Tz-ohO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="vse-aq-QvG" secondAttribute="trailing" constant="-16" id="RAo-Lm-DcQ"/>
+                            <constraint firstItem="vse-aq-QvG" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="g5T-mG-MVU"/>
+                            <constraint firstItem="vse-aq-QvG" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="vGZ-iw-Jrr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Hwi-5Q-ox7" secondAttribute="trailing" constant="-16" id="yQZ-s7-mBi"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Hwi-5Q-ox7" secondAttribute="bottom" id="ylA-TB-w6h"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="ucV-VC-Vjs" appends="YES" id="JEq-qt-gxY"/>
