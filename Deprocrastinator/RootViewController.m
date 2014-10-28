@@ -46,6 +46,44 @@
     ToDoData *toDoItem = self.toDoItemsArray[indexPath.row];
 
     cell.textLabel.text = toDoItem.toDoText;
+
+    //setting the color of the background
+    if ([toDoItem.labelColor isEqualToString:@"red"])
+    {
+        cell.textLabel.backgroundColor = [UIColor redColor];
+    }
+
+    else if ([toDoItem.labelColor isEqualToString:@"yellow"])
+    {
+        cell.textLabel.backgroundColor = [UIColor yellowColor];
+    }
+
+    else if ([toDoItem.labelColor isEqualToString:@"green"])
+    {
+        cell.textLabel.backgroundColor = [UIColor greenColor];
+    }
+
+    else if ([toDoItem.labelColor isEqualToString:@"white"])
+    {
+        cell.textLabel.backgroundColor = [UIColor whiteColor];
+    }
+
+    else
+    {
+        cell.textLabel.backgroundColor = [UIColor whiteColor];
+    }
+
+    //setting the checkmark bool
+    if (toDoItem.boolIsChecked == YES)
+    {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+
+    else
+    {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
     return cell;
 
 }
@@ -77,8 +115,23 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [self.toDoItemsArray removeObjectAtIndex:indexPath.row];
-        [self.toDoTableView reloadData];
+
+        UIAlertController *deleteOrCancelAlert = [UIAlertController alertControllerWithTitle:@"Confirm Delete" message:@"Are you sure you want to delete this task?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *delete = [UIAlertAction actionWithTitle:@"DELETE" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)
+                                 {
+                                     [self.toDoItemsArray removeObjectAtIndex:indexPath.row];
+                                     [self.toDoTableView reloadData];
+
+                                 }];
+        [deleteOrCancelAlert addAction:delete];
+        
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL" style:UIAlertActionStyleDefault handler:nil];
+        [deleteOrCancelAlert addAction:cancel];
+        
+        [self presentViewController:deleteOrCancelAlert animated:YES completion:nil];
+
+
+
     }
 }
 
