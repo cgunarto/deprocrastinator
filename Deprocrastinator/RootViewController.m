@@ -131,6 +131,7 @@
         [deleteOrCancelAlert addAction:delete];
         
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL" style:UIAlertActionStyleDefault handler:nil];
+        
         [deleteOrCancelAlert addAction:cancel];
         
         [self presentViewController:deleteOrCancelAlert animated:YES completion:nil];
